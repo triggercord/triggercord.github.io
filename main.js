@@ -6,7 +6,7 @@ async function logout(e, login_elem, logout_elem) {
     console.log("logged out");
     login_elem.style.display = "block";
     logout_elem.style.display = "none";
-    
+
     // todo: invalidate token thru discord 
 }
 
@@ -43,6 +43,10 @@ async function login(loginElem, logoutElem) {
         history.replaceState({}, '', window.location.href.slice(0, -1));
     }
 
+    // register logout procedure
+    // hide logout element, show login element
+    logout_elem.onclick = ((e) => await logout(e, login_elem, logout_elem));
+
     // show logout element 
     logout_elem.style.display = "block";
 
@@ -57,12 +61,8 @@ window.onload = () => {
     let [accessToken, tokenType] = await login(login_elem, logout_elem);
     if (!accessToken) {
         // if we don't have a login token, don't run anything from hrere
-        return; 
+        return;
     }
-
-    // register logout procedure
-    // hide logout element, show login element
-    logout_elem.onclick = ((e) => logout(e, login_elem, logout_elem));
 
 
     let params = new URLSearchParams();
