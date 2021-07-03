@@ -16,7 +16,7 @@ header {
     justify-content: space-between;
     background: #00000070;
     color: #fff;
-    padding: 20px;
+    padding: 1.4rem;
     margin: 0 0 4em 0;
 }
 
@@ -30,6 +30,15 @@ header a {
     line-height: 2rem;
 }
 
+#description {
+    padding: 1rem;
+    font-size: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto 2em auto;
+    background: #99999970;
+    border: 0.2rem solid #00000070;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -37,17 +46,14 @@ header a {
     flex-flow: column wrap;
     justify-items: center;
     align-content: space-between;
-    padding: 1.5rem;
-    height: 1700px;
+    height: 4100px;
 }
 
 .item {
     margin-bottom: 1.5rem;
     width: calc(33% - 1.5rem);
     display: block;
-    object-fit: cover;
-    border: 0.2em solid #00000070;
-    max-height: 500px;
+    max-height: 780px;
 }
 
 .item:nth-child(3n+1) { order: 1; }
@@ -62,7 +68,24 @@ header a {
   order: 2;
 }
 
-.break {
-    flex-basis: 100%;
-    height: 0;
+.item img {
+    border: 0.2em solid #00000070;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    margin-bottom: 0.25rem;
+}
+
+.like-button {
+    cursor: pointer;
+    font-size: 1.5rem;
+    width: 100%;
+    text-align: center;
+    display: block;
+    background: #99999970;
+    border: 0.2rem solid #00000070;
+}
+
+.like-button:hover {
+    background: #00000070;
 }

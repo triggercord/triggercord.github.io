@@ -36,12 +36,16 @@ async function login(login_elem, logout_elem) {
         localStorage.setItem("token_type", token_type);
     }
 
+    console.log("Removing token from url");
+
     // remove token from url
     window.location.replace("#");
     // slice off the remaining '#' in HTML5:    
     if (typeof window.history.replaceState == "function") {
         history.replaceState({}, '', window.location.href.slice(0, -1));
     }
+
+    console.log("Registering logout function");
 
     // register logout procedure
     // hide logout element, show login element
@@ -55,25 +59,54 @@ async function login(login_elem, logout_elem) {
     return [accessToken, token_type];
 }
 
+
+async function likePicture(picture, accessToken, tokenType) {
+    let params = new URLSearchParams();
+    params.set("access_token", accessToken);
+    params.set("token_type", tokenType);
+    
+    let result = await fetch(`${api_url}/like/${picture}/?${params.toString()}`);
+    let json = await result.json();
+    return json;
+}
+
 // consider this the main function
 window.onload = async () => {
     let login_elem = document.getElementById("login");
     let logout_elem = document.getElementById("logout");
 
     let [accessToken, tokenType] = await login(login_elem, logout_elem);
+
     if (!accessToken) {
         // if we don't have a login token, don't run anything from hrere
         return;
     }
 
 
+    let buttons = document.getElementsByClassName("like-button");
+
+    for (button of buttons) {
+        button.onclick = async (e) => {
+            let picture = e.target.dataset.picture;
+            console.log(picture);
+            
+            try {
+                let json = await likePicture(picture, accessToken, tokenType);
+                console.log(json);
+                e.target.innerText = "💚";
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
     let params = new URLSearchParams();
     params.set("token_type", tokenType);
     params.set("access_token", accessToken);
 
     // example, nothing more
-    fetch(`${api_url}/likes/?${params.toString()}`)
-        .then(result => result.json())
-        .then(console.log)
-        .catch(console.error);
+    // fetch(`${api_url}/likes/?${params.toString()}`)
+    //     .then(result => result.json())
+    //     .then(console.log)
+    //     .catch(console.error);
 };
