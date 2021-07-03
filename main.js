@@ -1,9 +1,19 @@
 const api_url = "https://sac.nombox.de";
 
-window.onload = () => {
+async function logout(e, login_elem, logout_elem) {
+    e.preventDefault();
+    localStorage.clear();
+    console.log("logged out");
+    login_elem.style.display = "block";
+    logout_elem.style.display = "none";
+    
+    // todo: invalidate token thru discord 
+}
+
+// return -> [accessToken, tokenType]
+async function login(loginElem, logoutElem) {
     let [accessToken, token_type] = [localStorage.getItem("access_token"), localStorage.getItem("token_type")];
-    let login_elem = document.getElementById("login");
-    let logout_elem = document.getElementById("logout");
+
     // do we already have a token in storage?
     if (!accessToken) {
         console.log("no access token in localStorage, trying fragment");
@@ -17,14 +27,13 @@ window.onload = () => {
         if (!accessToken) {
             console.log("no access token in url, showing login button");
             login_elem.style.display = "block";
-            return
+            return [null, null];
         }
         console.log("access token in url! Storing in localStorage");
 
         // we finally have a token. might as well store it
         localStorage.setItem("access_token", accessToken);
         localStorage.setItem("token_type", token_type);
-
     }
 
     // remove token from url
@@ -36,16 +45,24 @@ window.onload = () => {
 
     // show logout element 
     logout_elem.style.display = "block";
-    
+
+    return [accessToken, token_type];
+}
+
+// consider this the main function
+window.onload = () => {
+    let login_elem = document.getElementById("login");
+    let logout_elem = document.getElementById("logout");
+
+    let [accessToken, tokenType] = await login(login_elem, logout_elem);
+    if (!accessToken) {
+        // if we don't have a login token, don't run anything from hrere
+        return; 
+    }
+
     // register logout procedure
     // hide logout element, show login element
-    logout_elem.onclick = ((e) => {
-        e.preventDefault();
-        localStorage.clear();
-        console.log("logged out");
-        login_elem.style.display = "block";
-        logout_elem.style.display = "hidden";
-    });
+    logout_elem.onclick = ((e) => logout(e, login_elem, logout_elem));
 
 
     let params = new URLSearchParams();
