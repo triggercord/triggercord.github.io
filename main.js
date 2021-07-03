@@ -11,7 +11,7 @@ async function logout(e, login_elem, logout_elem) {
 }
 
 // return -> [accessToken, tokenType]
-async function login(loginElem, logoutElem) {
+async function login(login_elem, logout_elem) {
     let [accessToken, token_type] = [localStorage.getItem("access_token"), localStorage.getItem("token_type")];
 
     // do we already have a token in storage?
@@ -45,7 +45,9 @@ async function login(loginElem, logoutElem) {
 
     // register logout procedure
     // hide logout element, show login element
-    logout_elem.onclick = ((e) => await logout(e, login_elem, logout_elem));
+    logout_elem.onclick = async (e) => {
+        await logout(e, login_elem, logout_elem);
+    };
 
     // show logout element 
     logout_elem.style.display = "block";
@@ -54,7 +56,7 @@ async function login(loginElem, logoutElem) {
 }
 
 // consider this the main function
-window.onload = () => {
+window.onload = async () => {
     let login_elem = document.getElementById("login");
     let logout_elem = document.getElementById("logout");
 
@@ -66,7 +68,7 @@ window.onload = () => {
 
 
     let params = new URLSearchParams();
-    params.set("token_type", token_type);
+    params.set("token_type", tokenType);
     params.set("access_token", accessToken);
 
     // example, nothing more
