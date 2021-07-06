@@ -105,7 +105,7 @@ header a {
         flex-flow: column wrap;
         justify-items: center;
         align-content: space-around;
-        height: max(2000px, min(700vw, 7400px));
+        height: max(2000px, min(700vw, 7500px));
     }
 
     .item {
