@@ -60,12 +60,43 @@ async function login(login_elem, logout_elem) {
 }
 
 
-async function likePicture(picture, accessToken, tokenType) {
+async function likeEntry(entry, accessToken, tokenType) {
+    return await _api("like", accessToken, tokenType, { entry: entry });
+}
+
+async function unlikeEntry(entry, accessToken, tokenType) {
+    return await _api("unlike", accessToken, tokenType, { entry: entry });
+}
+
+// gets all the pictures already liked by this user
+async function likesByUser(accessToken, tokenType) {
+    return await _api("likes-by-user", accessToken, tokenType, {});
+}
+
+
+async function _api(action, accessToken, tokenType, options) {
     let params = new URLSearchParams();
     params.set("access_token", accessToken);
     params.set("token_type", tokenType);
-    
-    let result = await fetch(`${api_url}/like/${picture}/?${params.toString()}`);
+
+    let url = api_url;
+    switch (action) {
+        case "like":
+            url += `/like/${options.entry}`;
+            break;
+        case "unlike":
+            url += `/unlike/${options.entry}`;
+            break;
+        case "likes-by-user":
+            url += "/likes/by-user";
+            break;
+        default:
+            throw "Unknown action";
+    }
+    url += `/?${params.toString()}`;
+    console.log("Making request to: ", url);
+
+    let result = await fetch(url);
     let json = await result.json();
     return json;
 }
@@ -82,31 +113,33 @@ window.onload = async () => {
         return;
     }
 
+    let likedEntries = new Set(await likesByUser(accessToken, tokenType) || []);
+    console.log(likedEntries);
 
     let buttons = document.getElementsByClassName("like-button");
 
     for (button of buttons) {
+        // if a picture is already liked, replace red heart with green one
+        let entry = button.dataset.picture;
+        if (likedEntries.has(entry)) {
+            button.innerText = "💚";
+        }
+
         button.onclick = async (e) => {
-            let picture = e.target.dataset.picture;
-            console.log(picture);
-            
+            let entry = e.target.dataset.picture;
             try {
-                let json = await likePicture(picture, accessToken, tokenType);
-                console.log(json);
-                e.target.innerText = "💚";
+                if (likedEntries.has(entry)) {
+                    let json = await unlikeEntry(entry, accessToken, tokenType);
+                    e.target.innerText = "❤️";
+                    likedEntries.delete(entry);
+                } else {
+                    let json = await likeEntry(entry, accessToken, tokenType);
+                    e.target.innerText = "💚";
+                    likedEntries.add(entry);
+                }
             } catch (error) {
                 console.error(error);
             }
         }
     }
-
-    let params = new URLSearchParams();
-    params.set("token_type", tokenType);
-    params.set("access_token", accessToken);
-
-    // example, nothing more
-    // fetch(`${api_url}/likes/?${params.toString()}`)
-    //     .then(result => result.json())
-    //     .then(console.log)
-    //     .catch(console.error);
 };
