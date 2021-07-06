@@ -9,6 +9,7 @@ body {
     font-family: Helvetica, sans-serif;
     background-image: linear-gradient(to right top, #c81daa, #a35ad4, #727ceb, #3a96f2, #12a9eb);
     background-attachment: fixed;
+    padding: 1.5rem;
 }
 
 header {
@@ -16,8 +17,9 @@ header {
     justify-content: space-between;
     background: #00000070;
     color: #fff;
-    padding: 1.4rem;
-    margin: 0 0 4em 0;
+    padding: 1.4em;
+    margin: 0 auto 2.5rem auto;
+    max-width: 1200px;
 }
 
 header h1 {
@@ -32,7 +34,7 @@ header a {
 
 .description {
     padding: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     max-width: 1200px;
     margin: 0 auto 2em auto;
     background: #99999970;
@@ -46,14 +48,14 @@ header a {
     flex-flow: column wrap;
     justify-items: center;
     align-content: space-between;
-    height: 4100px;
+    height: 3800px;
 }
 
 .item {
     margin-bottom: 1.5rem;
     width: calc(33% - 1.5rem);
     display: block;
-    max-height: 780px;
+    max-height: 600px;
 }
 
 .item:nth-child(3n+1) { order: 1; }
@@ -88,4 +90,26 @@ header a {
 
 .like-button:hover {
     background: #00000070;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 12px;
+    }
+
+    .container {
+        margin: 0 auto;
+        display: flex;
+        flex-flow: column wrap;
+        justify-items: center;
+        align-content: space-around;
+        height: auto;
+    }
+
+    .item {
+        margin-bottom: 1.5rem;
+        width: 100%;
+        display: block;
+    }
 }
