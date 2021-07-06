@@ -7,6 +7,18 @@ async function logout(e, login_elem, logout_elem) {
     login_elem.style.display = "block";
     logout_elem.style.display = "none";
 
+    // show login message
+    let login_message = document.getElementById("login-message");
+    login_message.style.display = "block";
+
+    // hide description
+    let description = document.getElementById("description");
+    description.style.display = "none";
+
+    // hide iamges
+    let images = document.getElementById("images");
+    images.style.display = "none";
+
     // todo: invalidate token thru discord 
 }
 
@@ -55,6 +67,18 @@ async function login(login_elem, logout_elem) {
 
     // show logout element 
     logout_elem.style.display = "block";
+
+    // hide login message
+    let login_message = document.getElementById("login-message");
+    login_message.style.display = "none";
+
+    // show description
+    let description = document.getElementById("description");
+    description.style.display = "block";
+
+    // show iamges
+    let images = document.getElementById("images");
+    images.style.display = "flex";
 
     return [accessToken, token_type];
 }
