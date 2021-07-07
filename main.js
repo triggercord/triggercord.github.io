@@ -146,7 +146,7 @@ window.onload = async () => {
         // if a picture is already liked, replace red heart with green one
         let entry = button.dataset.picture;
         if (likedEntries.has(entry)) {
-            button.innerText = "💚";
+            button.innerText = "❤️";
         }
 
         button.onclick = async (e) => {
@@ -154,11 +154,11 @@ window.onload = async () => {
             try {
                 if (likedEntries.has(entry)) {
                     let json = await unlikeEntry(entry, accessToken, tokenType);
-                    e.target.innerText = "❤️";
+                    e.target.innerText = "🤍";
                     likedEntries.delete(entry);
                 } else {
                     let json = await likeEntry(entry, accessToken, tokenType);
-                    e.target.innerText = "💚";
+                    e.target.innerText = "❤️";
                     likedEntries.add(entry);
                 }
             } catch (error) {
