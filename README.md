@@ -1,7 +1,9 @@
 # triggercord.github.io
 
 TODO:
-* remove borders
+* make things look better: no borders, better instructions
+* countdown
+* better load times
 * restrict login to only in discord.gg/trigger
-* improve caption
+* make a better liking mechanism (maybe like instagram double click to like
 * 
