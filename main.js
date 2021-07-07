@@ -154,7 +154,7 @@ window.onload = async () => {
             try {
                 if (likedEntries.has(entry)) {
                     let json = await unlikeEntry(entry, accessToken, tokenType);
-                    e.target.innerText = "🤍";
+                    e.target.innerText = "♡";
                     likedEntries.delete(entry);
                 } else {
                     let json = await likeEntry(entry, accessToken, tokenType);
